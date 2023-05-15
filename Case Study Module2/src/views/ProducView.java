@@ -4,7 +4,6 @@ import Sv.Danh_sach_sv;
 import Utils.AppUtils;
 import models.SinhVien;
 
-import javax.rmi.CORBA.Util;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -22,16 +21,15 @@ public class ProducView {
                     "|" + "4.	Sửa thông tin sinh viên.\n" +
                     "|" + "5.	Xoá Sinh Viên.\n" +
                     "|" + "6.	Số lượng học sinh có trong danh sách.\n" +
-                    "|" + "6.	Xếp Học Sinh điểm cao đến thấp.\n" +
-                    "|" + "0.   Thoát khỏi chương trình. \n" +
+                    "|" + "0. Thoát khỏi chương trình. \n" +
                     "|" + "_____________________________________________");
             choise = AppUtils.retryChoose2();
             switch (choise) {
                 case 1:
                     System.out.println(" ⭆ Nhập Tên ");
-                    String name = AppUtils.retryString(input.nextLine());
+                    String name =AppUtils.retryString();
                     System.out.println("⭆ Nhập Năm Sinh: ");
-                    int yearOfBirth = Integer.parseInt(input.nextLine());
+                    int yearOfBirth = AppUtils.dayOfBird();
                     System.out.println("Nhập địa chỉ: ");
                     String address = input.nextLine();
                     System.out.println("Nhập điểm trung bình môn Toán học kỳ 1: ");
@@ -65,6 +63,9 @@ public class ProducView {
                             dssv.academicAbility(RoundAverage),
                             date
                     );
+                    System.out.println("Danh_sach_sv.studentId");
+                    System.out.println(Danh_sach_sv.studentId);
+                    sv.setStudentId(Danh_sach_sv.studentId++);
                     dssv.them_sv(sv);
                     dssv.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                     break;

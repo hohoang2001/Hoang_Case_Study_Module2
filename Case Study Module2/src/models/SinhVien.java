@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class SinhVien implements Comparable<SinhVien>, IModel {
     private static int maxid = 0;
-    private int studenId;
+    private int studentId;
     private String name;
     private int yearOfBirth;
 
@@ -41,7 +41,6 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
                     String academicAbility,
                     LocalDate Datatime
     ) {
-        this.studenId = ++maxid;
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.mathOne = mathOne;
@@ -57,12 +56,12 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
 
     }
 
-    public int getStudenId() {
-        return studenId;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudenId(int ma_sv) {
-        studenId = studenId;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public String getName() {
@@ -166,7 +165,7 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
     @Override
     public String toString() {
         return
-                studenId + "," +
+                studentId + "," +
                         name + "," +
                         yearOfBirth + "," +
                         address + "," +
@@ -184,14 +183,14 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
 
     @Override
     public int compareTo(SinhVien o) {
-        return Integer.compare(this.studenId, o.studenId);
+        return Integer.compare(this.studentId, o.studentId);
     }
 
 
     @Override
     public void parseData(String line) {
         String[] item = line.split(",");
-        this.studenId = Integer.parseInt(item[0]);
+        this.studentId = Integer.parseInt(item[0]);
         this.name = item[1];
         this.yearOfBirth = Integer.parseInt(item[2]);
         this.address = item[3];

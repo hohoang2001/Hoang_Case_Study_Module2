@@ -3,16 +3,13 @@ package Sv;
 import Utils.AppUtils;
 import Utils.FileUtils;
 import models.SinhVien;
-import views.ProducView;
 
-import javax.rmi.CORBA.Util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,11 @@ import java.util.Scanner;
 public class Danh_sach_sv {
     private List<SinhVien> SinhViens;
 
+    public static int studentId = 0;
+
     public Danh_sach_sv() {
         this.SinhViens = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", SinhVien.class);
+        studentId = SinhViens.get(SinhViens.size() - 1).getStudentId() + 1;
     }
 
     public Danh_sach_sv(ArrayList<SinhVien> SinhViens) {
@@ -38,7 +38,7 @@ public class Danh_sach_sv {
     public void inSv() {
         System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình");
         for (SinhVien sinhVien:SinhViens){
-            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n",sinhVien.getStudenId(),sinhVien.getName(),sinhVien.getYearOfBirth(),sinhVien.getaddress(),sinhVien.getMathOne(),sinhVien.getMathTwo(),sinhVien.getEnglishOne(),sinhVien.getEnglishTwo(),sinhVien.getLiteratureOne(),sinhVien.getLiteratureTwo(),sinhVien.getDatatime(),sinhVien.getMediumScore());
+            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n",sinhVien.getStudentId(),sinhVien.getName(),sinhVien.getYearOfBirth(),sinhVien.getaddress(),sinhVien.getMathOne(),sinhVien.getMathTwo(),sinhVien.getEnglishOne(),sinhVien.getEnglishTwo(),sinhVien.getLiteratureOne(),sinhVien.getLiteratureTwo(),sinhVien.getDatatime(),sinhVien.getMediumScore());
         }
     }
 
@@ -53,7 +53,7 @@ public class Danh_sach_sv {
         Scanner input = new Scanner(System.in);
         boolean a = true;
         for (SinhVien sinhvien : SinhViens) {
-            if (sinhvien.getStudenId() == sv) {
+            if (sinhvien.getStudentId() == sv) {
                 System.out.println("Nhập lại Họ Và Tên: ");
                 sinhvien.setName(input.nextLine());
                 System.out.println("Nhập lại Năm Sinh: ");
@@ -78,6 +78,7 @@ public class Danh_sach_sv {
                 double literature = averageSubject(sinhvien.getLiteratureOne(), sinhvien.getLiteratureTwo());
                 double RoundAverage = yearRoundAverage(math, english, literature);
                 sinhvien.setMediumScore(RoundAverage);
+                saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                 a = true;
                 break;
             }
@@ -91,8 +92,10 @@ public class Danh_sach_sv {
 
     public void xoaSv(int sv) {
         for (SinhVien sinhvien : SinhViens) {
-            if (sinhvien.getStudenId() == sv) {
+            if (sinhvien.getStudentId() == sv) {
+
                 SinhViens.remove(sinhvien);
+                saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                 break;
             }
         }
@@ -131,23 +134,24 @@ public class Danh_sach_sv {
             for (SinhVien student : SinhViens) {
                 String line = student.toString();
                 writer.write(line);
+                writer.write("\n");
             }
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void docsv() throws IOException {
-        File sinhvien = new File("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
-        try {
-            BufferedReader sinhviens = Files.newBufferedReader(sinhvien.toPath(), StandardCharsets.UTF_8);
-            String line = null;
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public static void docsv() throws IOException {
+//        File sinhvien = new File("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
+//        try {
+//            BufferedReader sinhviens = Files.newBufferedReader(sinhvien.toPath(), StandardCharsets.UTF_8);
+//            String line = null;
+//
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 }
 
