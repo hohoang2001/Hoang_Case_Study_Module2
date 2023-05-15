@@ -69,8 +69,8 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
         return name;
     }
 
-    public static void setName(String name) {
-        name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getYearOfBirth() {
@@ -78,7 +78,7 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
     }
 
     public void setYearOfBirth(int yearOfBirth) {
-        yearOfBirth = yearOfBirth;
+        this.yearOfBirth = yearOfBirth;
     }
 
     public String getAddress() {

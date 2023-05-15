@@ -55,7 +55,7 @@ public class Danh_sach_sv {
         for (SinhVien sinhvien : SinhViens) {
             if (sinhvien.getStudenId() == sv) {
                 System.out.println("Nhập lại Họ Và Tên: ");
-                SinhVien.setName(input.nextLine());
+                sinhvien.setName(input.nextLine());
                 System.out.println("Nhập lại Năm Sinh: ");
                 sinhvien.setYearOfBirth(Integer.parseInt(input.nextLine()));
                 System.out.println("Nhập lại địa chỉ: ");
