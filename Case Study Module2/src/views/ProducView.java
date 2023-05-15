@@ -1,6 +1,6 @@
 package views;
 
-import Sv.Danh_sach_sv;
+import Sv.danhSachSv;
 import Utils.AppUtils;
 import models.SinhVien;
 
@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ProducView {
         static Scanner input = new Scanner(System.in);
-        static Danh_sach_sv dssv = new Danh_sach_sv();
+        static danhSachSv dssv = new danhSachSv();
     public static void menu() {
         int choise;
         do {
@@ -64,16 +64,16 @@ public class ProducView {
                             date
                     );
                     System.out.println("Danh_sach_sv.studentId");
-                    System.out.println(Danh_sach_sv.studentId);
-                    sv.setStudentId(Danh_sach_sv.studentId++);
-                    dssv.them_sv(sv);
+                    System.out.println(danhSachSv.studentId);
+                    sv.setStudentId(danhSachSv.studentId++);
+                    dssv.themSv(sv);
                     dssv.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                     break;
                 case 2:
                     dssv.inSv();
                     break;
                 case 3:
-                    dssv.kiemtradanhsachsv();
+                    dssv.kiemTraDanhSachSv();
                     break;
                 case 4:
                     System.out.println("Nhập Mã Sinh Viên: ");

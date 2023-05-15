@@ -4,46 +4,42 @@ import Utils.AppUtils;
 import Utils.FileUtils;
 import models.SinhVien;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Danh_sach_sv {
-    private List<SinhVien> SinhViens;
+public class danhSachSv {
+    private List<SinhVien> sinhViens;
 
     public static int studentId = 0;
 
-    public Danh_sach_sv() {
-        this.SinhViens = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", SinhVien.class);
-        studentId = SinhViens.get(SinhViens.size() - 1).getStudentId() + 1;
+    public danhSachSv() {
+        this.sinhViens = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", SinhVien.class);
+        studentId = sinhViens.get(sinhViens.size() - 1).getStudentId() + 1;
     }
 
-    public Danh_sach_sv(ArrayList<SinhVien> SinhViens) {
-        this.SinhViens = SinhViens;
+    public danhSachSv(ArrayList<SinhVien> SinhViens) {
+        this.sinhViens = SinhViens;
     }
 
     //thêm sinh viên vào danh sách
-    public void them_sv(SinhVien sv) {
-        this.SinhViens.add(sv);
+    public void themSv(SinhVien sv) {
+        this.sinhViens.add(sv);
     }
 
     //in ra danh sách sv
     public void inSv() {
         System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình");
-        for (SinhVien sinhVien:SinhViens){
+        for (SinhVien sinhVien: sinhViens){
             System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n",sinhVien.getStudentId(),sinhVien.getName(),sinhVien.getYearOfBirth(),sinhVien.getaddress(),sinhVien.getMathOne(),sinhVien.getMathTwo(),sinhVien.getEnglishOne(),sinhVien.getEnglishTwo(),sinhVien.getLiteratureOne(),sinhVien.getLiteratureTwo(),sinhVien.getDatatime(),sinhVien.getMediumScore());
         }
     }
 
-    public void kiemtradanhsachsv() {
-        if (this.SinhViens.isEmpty()) {
+    public void kiemTraDanhSachSv() {
+        if (this.sinhViens.isEmpty()) {
             System.out.println("Danh sách sinh viên rỗng");
         } else
             inSv();
@@ -52,7 +48,7 @@ public class Danh_sach_sv {
     public void suaSV(int sv) {
         Scanner input = new Scanner(System.in);
         boolean a = true;
-        for (SinhVien sinhvien : SinhViens) {
+        for (SinhVien sinhvien : sinhViens) {
             if (sinhvien.getStudentId() == sv) {
                 System.out.println("Nhập lại Họ Và Tên: ");
                 sinhvien.setName(input.nextLine());
@@ -91,10 +87,10 @@ public class Danh_sach_sv {
     }
 
     public void xoaSv(int sv) {
-        for (SinhVien sinhvien : SinhViens) {
+        for (SinhVien sinhvien : sinhViens) {
             if (sinhvien.getStudentId() == sv) {
 
-                SinhViens.remove(sinhvien);
+                sinhViens.remove(sinhvien);
                 saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                 break;
             }
@@ -127,11 +123,11 @@ public class Danh_sach_sv {
            return "Yếu";
     }
     public int laySoluongsv(){
-        return this.SinhViens.size();
+        return this.sinhViens.size();
     }
     public void saveToFile(String filename) {
         try (FileWriter writer = new FileWriter(filename, false)) {
-            for (SinhVien student : SinhViens) {
+            for (SinhVien student : sinhViens) {
                 String line = student.toString();
                 writer.write(line);
                 writer.write("\n");
