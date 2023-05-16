@@ -2,7 +2,7 @@ package models;
 
 import java.time.LocalDate;
 
-public class SinhVien implements Comparable<SinhVien>, IModel {
+public class HocSinh implements Comparable<HocSinh>, IModel {
     private static int maxid = 0;
     private int studentId;
     private String name;
@@ -10,16 +10,16 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
 
     private String academicAbility;
     private String address;
-    private LocalDate Datatime;
+    private LocalDate dataTime;
     private double mathOne;
     private double mathTwo;
-    private double EnglishOne;
-    private double EnglishTwo;
+    private double engLishOne;
+    private double engLishTwo;
     private double literatureOne;
     private double literatureTwo;
     private double mediumScore;
 
-    public SinhVien() {
+    public HocSinh() {
     }
 
 
@@ -28,31 +28,31 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
     }
 
 
-    public SinhVien(String name,
-                    int yearOfBirth,
-                    String address,
-                    double mathOne,
-                    double mathTwo,
-                    double englishOne,
-                    double englishTwo,
-                    double literatureOne,
-                    double literatureTwo,
-                    double mediumScore,
-                    String academicAbility,
-                    LocalDate Datatime
+    public HocSinh(String name,
+                   int yearOfBirth,
+                   String address,
+                   double mathOne,
+                   double mathTwo,
+                   double englishOne,
+                   double englishTwo,
+                   double literatureOne,
+                   double literatureTwo,
+                   double mediumScore,
+                   String academicAbility,
+                   LocalDate Datatime
     ) {
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.mathOne = mathOne;
         this.mathTwo = mathTwo;
-        this.EnglishOne = englishOne;
-        this.EnglishTwo = englishTwo;
+        this.engLishOne = englishOne;
+        this.engLishTwo = englishTwo;
         this.literatureOne = literatureOne;
         this.literatureTwo = literatureTwo;
         this.address = address;
         this.mediumScore = mediumScore;
         this.academicAbility = academicAbility;
-        this.Datatime = Datatime;
+        this.dataTime = Datatime;
 
     }
 
@@ -104,20 +104,20 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
         this.mathTwo = mathTwo;
     }
 
-    public double getEnglishOne() {
-        return EnglishOne;
+    public double getEngLishOne() {
+        return engLishOne;
     }
 
-    public void setEnglishOne(double englishOne) {
-        EnglishOne = englishOne;
+    public void setEngLishOne(double engLishOne) {
+        this.engLishOne = engLishOne;
     }
 
-    public double getEnglishTwo() {
-        return EnglishTwo;
+    public double getEngLishTwo() {
+        return engLishTwo;
     }
 
-    public void setEnglishTwo(double englishTwo) {
-        EnglishTwo = englishTwo;
+    public void setEngLishTwo(double engLishTwo) {
+        this.engLishTwo = engLishTwo;
     }
 
     public double getLiteratureOne() {
@@ -126,14 +126,6 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
 
     public void setLiteratureOne(double literatureOne) {
         this.literatureOne = literatureOne;
-    }
-
-    public static int getMaxid() {
-        return maxid;
-    }
-
-    public static void setMaxid(int maxid) {
-        SinhVien.maxid = maxid;
     }
 
     public double getLiteratureTwo() {
@@ -155,10 +147,8 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
     public String getAcademicAbility() {
         return academicAbility;
     }
-
-
-    public LocalDate getDatatime() {
-        return Datatime;
+    public LocalDate getDataTime() {
+        return dataTime;
     }
 
 
@@ -171,18 +161,18 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
                         address + "," +
                         mathOne + "," +
                         mathTwo + "," +
-                        EnglishOne + "," +
-                        EnglishTwo + "," +
+                        engLishOne + "," +
+                        engLishTwo + "," +
                         literatureOne + "," +
                         literatureOne + "," +
                         mediumScore + "," +
                         academicAbility + "," +
-                        Datatime
+                        dataTime
                 ;
     }
 
     @Override
-    public int compareTo(SinhVien o) {
+    public int compareTo(HocSinh o) {
         return Integer.compare(this.studentId, o.studentId);
     }
 
@@ -196,12 +186,12 @@ public class SinhVien implements Comparable<SinhVien>, IModel {
         this.address = item[3];
         this.mathOne = Double.parseDouble(item[4]);
         this.mathTwo = Double.parseDouble(item[5]);
-        this.EnglishOne = Double.parseDouble(item[6]);
-        this.EnglishTwo = Double.parseDouble(item[7]);
+        this.engLishOne = Double.parseDouble(item[6]);
+        this.engLishTwo = Double.parseDouble(item[7]);
         this.literatureOne = Double.parseDouble(item[8]);
         this.literatureTwo = Double.parseDouble(item[9]);
         this.mediumScore = Double.parseDouble(item[10]);
         this.academicAbility = item[11];
-        this.Datatime = LocalDate.parse(item[12]);
+        this.dataTime = LocalDate.parse(item[12]);
     }
 }

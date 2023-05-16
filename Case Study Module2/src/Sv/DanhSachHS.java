@@ -2,7 +2,7 @@ package Sv;
 
 import Utils.AppUtils;
 import Utils.FileUtils;
-import models.SinhVien;
+import models.HocSinh;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,44 +11,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class danhSachSv {
-    private List<SinhVien> sinhViens;
+public class DanhSachHS {
+    private List<HocSinh> hocSinhs;
 
     public static int studentId = 0;
 
-    public danhSachSv() {
-        this.sinhViens = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", SinhVien.class);
-        studentId = sinhViens.get(sinhViens.size() - 1).getStudentId() + 1;
+    public DanhSachHS() {
+        this.hocSinhs = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", HocSinh.class);
+        studentId = hocSinhs.get(hocSinhs.size() - 1).getStudentId() + 1;
     }
 
-    public danhSachSv(ArrayList<SinhVien> SinhViens) {
-        this.sinhViens = SinhViens;
+    public DanhSachHS(ArrayList<HocSinh> hocSinhs) {
+        this.hocSinhs = hocSinhs;
     }
 
     //thêm sinh viên vào danh sách
-    public void themSv(SinhVien sv) {
-        this.sinhViens.add(sv);
+    public void themSv(HocSinh sv) {
+        this.hocSinhs.add(sv);
     }
 
     //in ra danh sách sv
     public void inSv() {
         System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình");
-        for (SinhVien sinhVien: sinhViens){
-            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n",sinhVien.getStudentId(),sinhVien.getName(),sinhVien.getYearOfBirth(),sinhVien.getaddress(),sinhVien.getMathOne(),sinhVien.getMathTwo(),sinhVien.getEnglishOne(),sinhVien.getEnglishTwo(),sinhVien.getLiteratureOne(),sinhVien.getLiteratureTwo(),sinhVien.getDatatime(),sinhVien.getMediumScore());
+        for (HocSinh hocSinh : hocSinhs){
+            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", hocSinh.getStudentId(), hocSinh.getName(), hocSinh.getYearOfBirth(), hocSinh.getaddress(), hocSinh.getMathOne(), hocSinh.getMathTwo(), hocSinh.getEngLishOne(), hocSinh.getEngLishTwo(), hocSinh.getLiteratureOne(), hocSinh.getLiteratureTwo(), hocSinh.getDataTime(), hocSinh.getMediumScore());
         }
     }
 
-    public void kiemTraDanhSachSv() {
-        if (this.sinhViens.isEmpty()) {
+    public void kiemTraDanhSachHS() {
+        if (this.hocSinhs.isEmpty()) {
             System.out.println("Danh sách sinh viên rỗng");
         } else
             inSv();
     }
 
-    public void suaSV(int sv) {
+    public void suaHS(int sv) {
         Scanner input = new Scanner(System.in);
         boolean a = true;
-        for (SinhVien sinhvien : sinhViens) {
+        for (HocSinh sinhvien : hocSinhs) {
             if (sinhvien.getStudentId() == sv) {
                 System.out.println("Nhập lại Họ Và Tên: ");
                 sinhvien.setName(input.nextLine());
@@ -61,16 +61,16 @@ public class danhSachSv {
                 System.out.println("Nhập điểm trung bình môn Toán học kỳ 2: ");
                 sinhvien.setMathTwo(AppUtils.Point());
                 System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 1: ");
-                sinhvien.setEnglishOne(AppUtils.Point());
+                sinhvien.setEngLishOne(AppUtils.Point());
                 System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 2: ");
-                sinhvien.setEnglishTwo(AppUtils.Point());
+                sinhvien.setEngLishTwo(AppUtils.Point());
                 System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 1: ");
                 sinhvien.setLiteratureOne(AppUtils.Point());
                 System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 2: ");
                 sinhvien.setLiteratureTwo(AppUtils.Point());
-                datatime();
+                dataTime();
                 double math = averageSubject(sinhvien.getMathOne(), sinhvien.getMathTwo());
-                double english = averageSubject(sinhvien.getEnglishOne(), sinhvien.getEnglishTwo());
+                double english = averageSubject(sinhvien.getEngLishOne(), sinhvien.getEngLishTwo());
                 double literature = averageSubject(sinhvien.getLiteratureOne(), sinhvien.getLiteratureTwo());
                 double RoundAverage = yearRoundAverage(math, english, literature);
                 sinhvien.setMediumScore(RoundAverage);
@@ -81,23 +81,23 @@ public class danhSachSv {
             a = false;
         }
         if (!a) {
-            System.out.println(" Mã sinh viên không có trong danh sách.");
+            System.out.println(" Mã học sinh không có trong danh sách.");
         }
 
     }
 
-    public void xoaSv(int sv) {
-        for (SinhVien sinhvien : sinhViens) {
+    public void deleteHS(int sv) {
+        for (HocSinh sinhvien : hocSinhs) {
             if (sinhvien.getStudentId() == sv) {
 
-                sinhViens.remove(sinhvien);
+                hocSinhs.remove(sinhvien);
                 saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                 break;
             }
         }
     }
 
-    public LocalDate datatime() {
+    public LocalDate dataTime() {
         LocalDate localDate = LocalDate.now();
         System.out.println("Ngày Thêm: " + localDate);
         return localDate;
@@ -122,12 +122,12 @@ public class danhSachSv {
         else
            return "Yếu";
     }
-    public int laySoluongsv(){
-        return this.sinhViens.size();
+    public int laySoLuongHS(){
+        return this.hocSinhs.size();
     }
     public void saveToFile(String filename) {
         try (FileWriter writer = new FileWriter(filename, false)) {
-            for (SinhVien student : sinhViens) {
+            for (HocSinh student : hocSinhs) {
                 String line = student.toString();
                 writer.write(line);
                 writer.write("\n");

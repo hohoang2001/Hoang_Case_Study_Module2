@@ -1,25 +1,25 @@
 package views;
 
-import Sv.danhSachSv;
+import Sv.DanhSachHS;
 import Utils.AppUtils;
-import models.SinhVien;
+import models.HocSinh;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ProducView {
         static Scanner input = new Scanner(System.in);
-        static danhSachSv dssv = new danhSachSv();
+        static DanhSachHS dssv = new DanhSachHS();
     public static void menu() {
         int choise;
         do {
             System.out.println("--------------MENU---------------");
             System.out.println("______________________________________________\n" +
-                    "|" + "1.	Thêm sinh viên vào danh sách.\n" +
-                    "|" + "2.	In danh sách sinh viên ra màn hình.\n" +
+                    "|" + "1.	Thêm học sinh vào danh sách.\n" +
+                    "|" + "2.	In danh sách học sinh ra màn hình.\n" +
                     "|" + "3.	Kiểm tra danh sách có rỗng hay không.\n" +
-                    "|" + "4.	Sửa thông tin sinh viên.\n" +
-                    "|" + "5.	Xoá Sinh Viên.\n" +
+                    "|" + "4.	Sửa thông tin học sinh.\n" +
+                    "|" + "5.	Xoá học sinh.\n" +
                     "|" + "6.	Số lượng học sinh có trong danh sách.\n" +
                     "|" + "0. Thoát khỏi chương trình. \n" +
                     "|" + "_____________________________________________");
@@ -49,8 +49,8 @@ public class ProducView {
                     double literature = dssv.averageSubject(literatureOne, literatureTwo);
                     dssv.yearRoundAverage(math, english, literature);
                     double RoundAverage = dssv.yearRoundAverage(math, english, literature);
-                    LocalDate date = dssv.datatime();
-                    SinhVien sv = new SinhVien(name,
+                    LocalDate date = dssv.dataTime();
+                    HocSinh sv = new HocSinh(name,
                             yearOfBirth,
                             address,
                             mathOne,
@@ -64,8 +64,8 @@ public class ProducView {
                             date
                     );
                     System.out.println("Danh_sach_sv.studentId");
-                    System.out.println(danhSachSv.studentId);
-                    sv.setStudentId(danhSachSv.studentId++);
+                    System.out.println(DanhSachHS.studentId);
+                    sv.setStudentId(DanhSachHS.studentId++);
                     dssv.themSv(sv);
                     dssv.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                     break;
@@ -73,17 +73,18 @@ public class ProducView {
                     dssv.inSv();
                     break;
                 case 3:
-                    dssv.kiemTraDanhSachSv();
+                    dssv.kiemTraDanhSachHS();
                     break;
                 case 4:
-                    System.out.println("Nhập Mã Sinh Viên: ");
-                    dssv.suaSV(input.nextInt());
+                    System.out.println("Nhập Mã học sinh: ");
+                    dssv.suaHS(input.nextInt());
                     break;
                 case 5:
-                    System.out.println("Nhập Mã Sinh Viên: ");
-                    dssv.xoaSv(input.nextInt());
+                    dssv.inSv();
+                    System.out.println("Nhập mã học sinh muốn xoá: ");
+                    dssv.deleteHS(input.nextInt());
                 case 6:
-                    System.out.println(dssv.laySoluongsv() + " Học sinh có trong danh sách.");
+                    System.out.println(dssv.laySoLuongHS() + " Học sinh có trong danh sách.");
             }
         }
         while (choise != 0);
