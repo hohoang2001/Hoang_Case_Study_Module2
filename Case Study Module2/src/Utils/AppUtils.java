@@ -98,5 +98,25 @@ public class AppUtils {
         }
         return true;
     }
+    public static int retryChoose() {
+        int option;
+        int min =0;
+        int max =2;
+        do {
+            try {
+                System.out.print(" ⭆ ");
+                option = Integer.parseInt(scanner.nextLine());
+                if (option > max || option < min) {
+                    System.out.println("Bạn nhập sai chức năng vui lòng nhập lai");
+                    continue;
+                }
+                break;
+            } catch (Exception ex) {
+                System.out.println("Bạn nhập sai chức năng vui lòng nhập lại");
+            }
+        } while (true);
+        return option;
+    }
+
 
 }

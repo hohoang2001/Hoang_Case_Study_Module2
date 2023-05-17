@@ -45,46 +45,58 @@ public class DanhSachHS {
             inSv();
     }
 
-    public void suaHS(int sv) {
+    public void suaHS() {
         Scanner input = new Scanner(System.in);
         boolean a = true;
-        for (HocSinh sinhvien : hocSinhs) {
-            if (sinhvien.getStudentId() == sv) {
-                System.out.println("Nhập lại Họ Và Tên: ");
-                sinhvien.setName(input.nextLine());
-                System.out.println("Nhập lại Năm Sinh: ");
-                sinhvien.setYearOfBirth(Integer.parseInt(input.nextLine()));
-                System.out.println("Nhập lại địa chỉ: ");
-                sinhvien.setAddress(input.nextLine());
-                System.out.println("Nhập điểm trung bình môn Toán học kỳ 1: ");
-                sinhvien.setMathOne(AppUtils.Point());
-                System.out.println("Nhập điểm trung bình môn Toán học kỳ 2: ");
-                sinhvien.setMathTwo(AppUtils.Point());
-                System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 1: ");
-                sinhvien.setEngLishOne(AppUtils.Point());
-                System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 2: ");
-                sinhvien.setEngLishTwo(AppUtils.Point());
-                System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 1: ");
-                sinhvien.setLiteratureOne(AppUtils.Point());
-                System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 2: ");
-                sinhvien.setLiteratureTwo(AppUtils.Point());
-                dataTime();
-                double math = averageSubject(sinhvien.getMathOne(), sinhvien.getMathTwo());
-                double english = averageSubject(sinhvien.getEngLishOne(), sinhvien.getEngLishTwo());
-                double literature = averageSubject(sinhvien.getLiteratureOne(), sinhvien.getLiteratureTwo());
-                double RoundAverage = yearRoundAverage(math, english, literature);
-                sinhvien.setMediumScore(RoundAverage);
-                saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
-                a = true;
+        int studenId;
+        do {
+            try {
+                System.out.println("Nhập Mã học sinh: ");
+                studenId = Integer.parseInt(input.nextLine());
                 break;
             }
-            a = false;
+            catch (Exception e){
+                System.out.println("Mã học sinh không hợp lệ vui lòng nhập bằng số");
+            }
         }
-        if (!a) {
-            System.out.println(" Mã học sinh không có trong danh sách.");
+        while (true);
+            for (HocSinh sinhvien : hocSinhs) {
+                if (sinhvien.getStudentId() == studenId) {
+                    System.out.println("Nhập lại Họ Và Tên: ");
+                    sinhvien.setName(AppUtils.retryString());
+                    System.out.println("Nhập lại Năm Sinh: ");
+                    sinhvien.setYearOfBirth(AppUtils.dayOfBird());
+                    System.out.println("Nhập lại địa chỉ: ");
+                    sinhvien.setAddress(input.nextLine());
+                    System.out.println("Nhập điểm trung bình môn Toán học kỳ 1: ");
+                    sinhvien.setMathOne(AppUtils.Point());
+                    System.out.println("Nhập điểm trung bình môn Toán học kỳ 2: ");
+                    sinhvien.setMathTwo(AppUtils.Point());
+                    System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 1: ");
+                    sinhvien.setEngLishOne(AppUtils.Point());
+                    System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 2: ");
+                    sinhvien.setEngLishTwo(AppUtils.Point());
+                    System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 1: ");
+                    sinhvien.setLiteratureOne(AppUtils.Point());
+                    System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 2: ");
+                    sinhvien.setLiteratureTwo(AppUtils.Point());
+                    dataTime();
+                    double math = averageSubject(sinhvien.getMathOne(), sinhvien.getMathTwo());
+                    double english = averageSubject(sinhvien.getEngLishOne(), sinhvien.getEngLishTwo());
+                    double literature = averageSubject(sinhvien.getLiteratureOne(), sinhvien.getLiteratureTwo());
+                    double RoundAverage = yearRoundAverage(math, english, literature);
+                    sinhvien.setMediumScore(RoundAverage);
+                    saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
+                    a = true;
+                    break;
+                }
+                a = false;
+            }
+            if (!a) {
+                System.out.println(" Mã học sinh không có trong danh sách.");
+            }
         }
 
-    }
 
     public void deleteHS(int sv) {
         for (HocSinh sinhvien : hocSinhs) {
