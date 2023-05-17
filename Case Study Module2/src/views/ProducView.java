@@ -1,6 +1,7 @@
 package views;
 
 import Sv.Account;
+import Sv.AccountSV;
 import Sv.DanhSachHS;
 import Utils.AppUtils;
 import models.HocSinh;
@@ -12,22 +13,54 @@ import java.util.Scanner;
 
 public class ProducView {
     private static Account account = new Account();
+    private static AccountSV accountsv = new AccountSV();
         static Scanner input = new Scanner(System.in);
         static DanhSachHS dssv = new DanhSachHS();
     static boolean exit = false;
+    public static void menuHs(){
+        int choise;
+        do {
+            System.out.println("      --------------MENU---------------");
+            System.out.println("______________________________________________\n" +
+                    "|" + "1.	Xem danh sách học sinh.                     |\n" +
+                    "|" + "2.	Kiểm tra danh sách có rỗng hay không.       |\n" +
+                    "|" + "3.	Số lượng học sinh có trong danh sách.       |\n" +
+                    "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
+                    "|" + "_____________________________________________  |");
+            choise = AppUtils.retryChoose2();
+            switch (choise){
+                case 1:
+                    dssv.inSv();
+                    break;
+                case 2:
+                    dssv.kiemTraDanhSachHS();
+                    break;
+                case 3:
+                    System.out.println(dssv.laySoLuongHS() + " Học sinh có trong danh sách.");
+                case 0:
+                    System.out.println("Quay lại chương trình đăng nhập");
+                    Account();
+                    break;
+            }
+        }
+        while (choise !=0);
+    }
     public static void menu() {
         int choise;
         do {
-            System.out.println("--------------MENU---------------");
+            System.out.println("      --------------MENU---------------");
             System.out.println("______________________________________________\n" +
-                    "|" + "1.	Thêm học sinh vào danh sách.\n" +
-                    "|" + "2.	In danh sách học sinh ra màn hình.\n" +
-                    "|" + "3.	Kiểm tra danh sách có rỗng hay không.\n" +
-                    "|" + "4.	Sửa thông tin học sinh.\n" +
-                    "|" + "5.	Xoá học sinh.\n" +
-                    "|" + "6.	Số lượng học sinh có trong danh sách.\n" +
-                    "|" + "0. Quay lại chương trình đăng nhập. \n" +
-                    "|" + "_____________________________________________");
+                    "|" + "1.	Thêm học sinh vào danh sách.                |\n" +
+                    "|" + "2.	In danh sách học sinh ra màn hình.          |\n" +
+                    "|" + "3.	Kiểm tra danh sách có rỗng hay không.       |\n" +
+                    "|" + "4.	Sửa thông tin học sinh.                     |\n" +
+                    "|" + "5.	Xoá học sinh.                               |\n" +
+                    "|" + "6.	Số lượng học sinh có trong danh sách.       |\n" +
+                    "|" + "7.	Xem Tài Khoản ADMIN.                        |\n" +
+                    "|" + "8.	Sửa tài khoản của sinh viên                 |\n" +
+                    "|" + "9.	Xoá tài khoản của sinh viên                 |\n" +
+                    "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
+                    "|" + "_____________________________________________  |");
             choise = AppUtils.retryChoose2();
             switch (choise) {
                 case 1:
@@ -35,19 +68,19 @@ public class ProducView {
                     String name =AppUtils.retryString();
                     System.out.println("⭆ Nhập Năm Sinh: ");
                     int yearOfBirth = AppUtils.dayOfBird();
-                    System.out.println("Nhập địa chỉ: ");
+                    System.out.println("⭆ Nhập địa chỉ: ");
                     String address = input.nextLine();
-                    System.out.println("Nhập điểm trung bình môn Toán học kỳ 1: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Toán học kỳ 1: ");
                     double mathOne = AppUtils.Point();
-                    System.out.println("Nhập điểm trung bình môn Toán học kỳ 2: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Toán học kỳ 2: ");
                     double mathTwo = AppUtils.Point();
-                    System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 1: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Tếng Anh học kỳ 1: ");
                     double englishOne = AppUtils.Point();
-                    System.out.println("Nhập điểm trung bình môn Tếng Anh học kỳ 2: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Tếng Anh học kỳ 2: ");
                     double englishTwo = AppUtils.Point();
-                    System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 1: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Văn Học học kỳ 1: ");
                     double literatureOne = AppUtils.Point();
-                    System.out.println("Nhập điểm trung bình môn Văn Học học kỳ 2: ");
+                    System.out.println("⭆ Nhập điểm trung bình môn Văn Học học kỳ 2: ");
                     double literatureTwo = AppUtils.Point();
                     double math = dssv.averageSubject(mathOne, mathTwo);
                     double english = dssv.averageSubject(englishOne, englishTwo);
@@ -89,6 +122,9 @@ public class ProducView {
                 case 6:
                     System.out.println(dssv.laySoLuongHS() + " Học sinh có trong danh sách.");
                     break;
+                case 7:
+                    account.inUser();
+                    break;
                 case 0:
                     System.out.println("Quay lại chương trình đăng nhập");
                     Account();
@@ -112,11 +148,38 @@ public class ProducView {
 
             switch (Select){
                 case 1:
-                    Login();
+                    System.out.println("1 Đăng nhập Tài Khoản Admin");
+                    System.out.println("2 Đăng nhập tài khoản sinh viên");
+                    System.out.println("0 Quay Lại chương trình");
+                    int choose = AppUtils.retryChoose();
+                    switch (choose) {
+                        case 1:
+                            Login();
+                            break;
+                        case 2:
+                            LoginSV();
+                            break;
+                        case 0:
+                            exit = false;
+                            break;
+                    }
                     break;
                 case 2:
-                    System.out.println("Đăng Ký");
-                    RegisterAccount();
+                    System.out.println("1 Đăng ký Tài Khoản Admin");
+                    System.out.println("2 Đăng ký tài khoản sinh viên");
+                    System.out.println("0 Quay Lại chương trình");
+                    int chossse = AppUtils.retryChoose();
+                    switch (chossse){
+                        case 1:
+                            RegisterAccount();
+                            break;
+                        case 2:
+                            RegisterAccountSV();
+                            break;
+                        case 0:
+                            exit = false;
+                            break;
+                    }
                     break;
                 case 0:
                     exit = true;
@@ -162,6 +225,43 @@ public class ProducView {
 
         return loggedIn;
     }
+    public static boolean LoginSV() {
+        boolean loggedIn = false;
+        Scanner scanner = new Scanner(System.in);
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/AccountSv.csv"))) {
+            String line;
+            boolean found = false;
+
+            System.out.println("Nhập tên đăng nhập: ");
+            String username = scanner.nextLine();
+            System.out.println("Nhập mật khẩu: ");
+            String password = scanner.nextLine();
+
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                    found = true;
+                    loggedIn = true;
+                    menuHs();
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Tài khoản hoặc mật khẩu không đúng.");
+                exit = true;
+                Account();
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi: Không thể đọc file.");
+            exit = true;
+            Account();
+        }
+
+        return loggedIn;
+    }
+
 
     public static void RegisterAccount(){
         Scanner scanner = new Scanner(System.in);
@@ -194,6 +294,42 @@ public class ProducView {
             while (true);
             System.out.println("Đăng Ký Tài Khoản Thành Công");
             Login();
+        } catch (IOException e) {
+            System.out.println("Lỗi Không Thể Tạo Tài Khoản");
+        }
+
+    }
+    public static void RegisterAccountSV(){
+        Scanner scanner = new Scanner(System.in);
+        try(PrintWriter writer = new PrintWriter(new FileWriter("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/AccountSv.csv", true))) {
+            do {
+                writer.println();
+                System.out.println("Nhập Tài Khoản");
+                String useNew = scanner.nextLine();
+                if (accountsv.CheckNameAccount(useNew)){
+                    System.out.println("Tài khoản đã tồn tại");
+                    continue;
+                }
+                writer.print(useNew);
+                break;
+            }
+            while (true);
+            System.out.println("Nhập Mật Khẩu");
+            do {
+                String passNew = scanner.nextLine();
+                int lenght = 10;
+                if (passNew.length() > lenght){
+                    System.out.println("Vui Lòng Nhập Độ Dài Mật Khẩu 10 Ký Tự");
+                    System.out.println("Nhập Lại");
+                    continue;
+                }
+                writer.print("," + passNew);
+                writer.close();
+                break;
+            }
+            while (true);
+            System.out.println("Đăng Ký Tài Khoản Thành Công");
+            LoginSV();
         } catch (IOException e) {
             System.out.println("Lỗi Không Thể Tạo Tài Khoản");
         }

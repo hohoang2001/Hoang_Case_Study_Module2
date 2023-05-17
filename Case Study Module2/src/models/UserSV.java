@@ -1,14 +1,18 @@
 package models;
 
-public class User implements IModel<User>{
-   private String useName;
-   private String passWord;
-   public User(){
+public class UserSV implements IModel<UserSV> {
+    private String useName;
+    private String passWord;
 
-   }
+    public UserSV(String useName, String passWord) {
+        this.useName = useName;
+        this.passWord = passWord;
+    }
+
+    public UserSV() {
+    }
     public String getUseName() {
-
-       return useName;
+        return useName;
     }
 
     public void setUseName(String useName) {
@@ -22,12 +26,6 @@ public class User implements IModel<User>{
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-
-    public User(String useName, String passWord) {
-        this.useName = useName;
-        this.passWord = passWord;
-
-    }
     @Override
     public String toString() {
         return useName + "," + passWord;
@@ -35,9 +33,9 @@ public class User implements IModel<User>{
 
     @Override
     public void parseData(String line) {
-            String[] item = line.split(",");
-            this.useName = item[0];
-            this.passWord = item[1];
+        String[] item = line.split(",");
+        this.useName = item[0];
+        this.passWord = item[1];
 
     }
 }

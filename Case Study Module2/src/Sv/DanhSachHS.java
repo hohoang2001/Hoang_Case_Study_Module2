@@ -22,6 +22,7 @@ public class DanhSachHS {
     }
 
     public DanhSachHS(ArrayList<HocSinh> hocSinhs) {
+
         this.hocSinhs = hocSinhs;
     }
 
