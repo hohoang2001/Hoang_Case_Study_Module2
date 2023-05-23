@@ -1,7 +1,9 @@
 package models;
 
 public class User implements IModel<User>{
-   private String useName;
+
+
+    private String useName;
    private String passWord;
    public User(){
 
@@ -30,7 +32,8 @@ public class User implements IModel<User>{
     }
     @Override
     public String toString() {
-        return useName + "," + passWord;
+
+       return useName + "," + passWord;
     }
 
     @Override

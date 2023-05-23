@@ -8,7 +8,6 @@ import models.HocSinh;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
 public class ProducView {
@@ -17,13 +16,13 @@ public class ProducView {
         static Scanner input = new Scanner(System.in);
         static DanhSachHS dssv = new DanhSachHS();
     static boolean exit = false;
-    public static void menuHs(){
+    public static void menuHs() throws IOException {
         int choise;
         do {
             System.out.println("      --------------MENU---------------");
             System.out.println("______________________________________________\n" +
                     "|" + "1.	Xem danh sách học sinh.                     |\n" +
-                    "|" + "2.	Kiểm tra danh sách có rỗng hay không.       |\n" +
+                    "|" + "2.	Tìm học sinh theo tên.                      |\n" +
                     "|" + "3.	Số lượng học sinh có trong danh sách.       |\n" +
                     "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
                     "|" + "_____________________________________________  |");
@@ -33,32 +32,32 @@ public class ProducView {
                     dssv.inSv();
                     break;
                 case 2:
-                    dssv.kiemTraDanhSachHS();
+                    dssv.timKiemHs();;
                     break;
                 case 3:
                     System.out.println(dssv.laySoLuongHS() + " Học sinh có trong danh sách.");
+                    break;
                 case 0:
                     System.out.println("Quay lại chương trình đăng nhập");
-                    Account();
+                    account();
                     break;
             }
         }
         while (choise !=0);
     }
-    public static void menu() {
+    public static void menu() throws IOException {
         int choise;
         do {
             System.out.println("      --------------MENU---------------");
             System.out.println("______________________________________________\n" +
                     "|" + "1.	Thêm học sinh vào danh sách.                |\n" +
-                    "|" + "2.	In danh sách học sinh ra màn hình.          |\n" +
-                    "|" + "3.	Kiểm tra danh sách có rỗng hay không.       |\n" +
+                    "|" + "2.	Tìm học sinh.                               |\n" +
+                    "|" + "3.	In học sinh                                 |\n" +
                     "|" + "4.	Sửa thông tin học sinh.                     |\n" +
                     "|" + "5.	Xoá học sinh.                               |\n" +
                     "|" + "6.	Số lượng học sinh có trong danh sách.       |\n" +
                     "|" + "7.	Xem Tài Khoản ADMIN.                        |\n" +
-                    "|" + "8.	Sửa tài khoản của sinh viên                 |\n" +
-                    "|" + "9.	Xoá tài khoản của sinh viên                 |\n" +
+                    "|" + "8. Xếp danh sách điểm từ cao đến thấp          |\n" +
                     "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
                     "|" + "_____________________________________________  |");
             choise = AppUtils.retryChoose2();
@@ -106,7 +105,7 @@ public class ProducView {
                     dssv.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                     break;
                 case 2:
-                    dssv.inSv();
+                    dssv.timKiemHs();
                     break;
                 case 3:
                     dssv.kiemTraDanhSachHS();
@@ -125,9 +124,12 @@ public class ProducView {
                 case 7:
                     account.inUser();
                     break;
+                case 8:
+                    dssv.xepHs();
+                    break;
                 case 0:
                     System.out.println("Quay lại chương trình đăng nhập");
-                    Account();
+                    account();
                     break;
             }
         }
@@ -136,7 +138,7 @@ public class ProducView {
     public void showMenu(){
 
     }
-    public static void Account(){
+    public static void account(){
 
         Scanner scanner = new Scanner(System.in);
         do {
@@ -171,10 +173,10 @@ public class ProducView {
                     int chossse = AppUtils.retryChoose();
                     switch (chossse){
                         case 1:
-                            RegisterAccount();
+                            registerAccount();
                             break;
                         case 2:
-                            RegisterAccountSV();
+                            registerAccountSV();
                             break;
                         case 0:
                             exit = false;
@@ -215,12 +217,12 @@ public class ProducView {
             if (!found) {
                 System.out.println("Tài khoản hoặc mật khẩu không đúng.");
                 exit = true;
-                Account();
+                account();
             }
         } catch (IOException e) {
             System.out.println("Lỗi: Không thể đọc file.");
             exit = true;
-            Account();
+            account();
         }
 
         return loggedIn;
@@ -251,19 +253,19 @@ public class ProducView {
             if (!found) {
                 System.out.println("Tài khoản hoặc mật khẩu không đúng.");
                 exit = true;
-                Account();
+                account();
             }
         } catch (IOException e) {
             System.out.println("Lỗi: Không thể đọc file.");
             exit = true;
-            Account();
+            account();
         }
 
         return loggedIn;
     }
+    public static int id = 0;
+    public static void registerAccount(){
 
-
-    public static void RegisterAccount(){
         Scanner scanner = new Scanner(System.in);
         try(PrintWriter writer = new PrintWriter(new FileWriter("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Account.csv", true))) {
             do {
@@ -299,7 +301,7 @@ public class ProducView {
         }
 
     }
-    public static void RegisterAccountSV(){
+    public static void registerAccountSV(){
         Scanner scanner = new Scanner(System.in);
         try(PrintWriter writer = new PrintWriter(new FileWriter("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/AccountSv.csv", true))) {
             do {

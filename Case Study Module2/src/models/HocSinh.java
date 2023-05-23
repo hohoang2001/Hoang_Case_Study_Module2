@@ -147,6 +147,11 @@ public class HocSinh implements Comparable<HocSinh>, IModel {
     public String getAcademicAbility() {
         return academicAbility;
     }
+
+    public void setAcademicAbility(String academicAbility) {
+        this.academicAbility = academicAbility;
+    }
+
     public LocalDate getDataTime() {
         return dataTime;
     }
@@ -173,6 +178,7 @@ public class HocSinh implements Comparable<HocSinh>, IModel {
 
     @Override
     public int compareTo(HocSinh o) {
+
         return Integer.compare(this.studentId, o.studentId);
     }
 

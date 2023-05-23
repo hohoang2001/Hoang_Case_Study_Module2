@@ -52,7 +52,7 @@ public class AppUtils {
     public static int retryChoose2() {
         int option;
         int min =0;
-        int max =9;
+        int max =8;
         do {
             try {
             System.out.print(" ⭆ ");

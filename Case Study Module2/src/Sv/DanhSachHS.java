@@ -7,9 +7,7 @@ import models.HocSinh;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DanhSachHS {
     private List<HocSinh> hocSinhs;
@@ -19,6 +17,31 @@ public class DanhSachHS {
     public DanhSachHS() {
         this.hocSinhs = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv", HocSinh.class);
         studentId = hocSinhs.get(hocSinhs.size() - 1).getStudentId() + 1;
+    }
+    public void xepHs(){
+        List<HocSinh> hocSinhList = allhocsinh();
+        List<HocSinh> sortHocsinh = sortByScoreDescending(hocSinhList);
+        System.out.println("Học sinh sau khi xắp xếp:");
+       displayHocSinh(sortHocsinh);
+    }
+
+
+
+    public static void displayHocSinh(List<HocSinh> hocSinhList) {
+        for (HocSinh hocSinh : hocSinhList) {
+            System.out.println("Tên: " + hocSinh.getName() + ", Điểm trung bình: " + hocSinh.getMediumScore() + hocSinh.getAcademicAbility() + "\n");
+        }
+    }
+
+
+    public static List<HocSinh> allhocsinh(){
+        String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv";
+        return FileUtils.readFile(PATH, HocSinh.class);
+    }
+    public static List<HocSinh> sortByScoreDescending(List<HocSinh> hocSinh)  {
+        List<HocSinh> sortedList = new ArrayList<>(hocSinh);
+        Collections.sort(sortedList, Comparator.comparingDouble(HocSinh::getMediumScore).reversed());
+        return sortedList;
     }
 
     public DanhSachHS(ArrayList<HocSinh> hocSinhs) {
@@ -33,9 +56,9 @@ public class DanhSachHS {
 
     //in ra danh sách sv
     public void inSv() {
-        System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình");
+        System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình","Học Lực");
         for (HocSinh hocSinh : hocSinhs){
-            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", hocSinh.getStudentId(), hocSinh.getName(), hocSinh.getYearOfBirth(), hocSinh.getaddress(), hocSinh.getMathOne(), hocSinh.getMathTwo(), hocSinh.getEngLishOne(), hocSinh.getEngLishTwo(), hocSinh.getLiteratureOne(), hocSinh.getLiteratureTwo(), hocSinh.getDataTime(), hocSinh.getMediumScore());
+            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", hocSinh.getStudentId(), hocSinh.getName(), hocSinh.getYearOfBirth(), hocSinh.getaddress(), hocSinh.getMathOne(), hocSinh.getMathTwo(), hocSinh.getEngLishOne(), hocSinh.getEngLishTwo(), hocSinh.getLiteratureOne(), hocSinh.getLiteratureTwo(), hocSinh.getDataTime(), hocSinh.getMediumScore(), hocSinh.getAcademicAbility());
         }
     }
 
@@ -87,6 +110,7 @@ public class DanhSachHS {
                     double literature = averageSubject(sinhvien.getLiteratureOne(), sinhvien.getLiteratureTwo());
                     double RoundAverage = yearRoundAverage(math, english, literature);
                     sinhvien.setMediumScore(RoundAverage);
+                    sinhvien.setAcademicAbility(academicAbility(RoundAverage));
                     saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                     a = true;
                     break;
@@ -126,14 +150,14 @@ public class DanhSachHS {
     }
     public String  academicAbility(double diem){
         if(diem > 4 && diem <=6.5){
-           return "Trung bình";
+           return "Học Lực: Trung bình";
         } else if (diem >= 6.5 && diem<= 7.9) {
-           return "Học lực Khá";
+           return "Học lực: Khá";
         } else if (diem >= 8.0 && diem <= 10) {
-           return "Giỏi";
+           return "Học Lực: Giỏi";
         }
         else
-           return "Yếu";
+           return "Học Lực: Yếu";
     }
     public int laySoLuongHS(){
         return this.hocSinhs.size();
@@ -150,6 +174,38 @@ public class DanhSachHS {
             throw new RuntimeException(e);
         }
     }
+
+    public static List<HocSinh> searchStudentByName(String filePath, String name) throws IOException {
+
+        List<HocSinh> studentList = FileUtils.readFile(filePath, HocSinh.class);
+        List<HocSinh> foundStudents = new ArrayList<>();
+
+        for (HocSinh student : studentList) {
+            if (student.getName().toLowerCase().equalsIgnoreCase(name)) {
+                foundStudents.add(student);
+            }
+        }
+        return foundStudents;
+    }
+    public void timKiemHs() throws IOException {
+        String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Nhập Tên Học Sinh");
+        String name = input.nextLine();
+        List<HocSinh> foundStudents = searchStudentByName(PATH, name);
+        if (!foundStudents.isEmpty()){
+            System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", "ID", "Tên", "Năm sinh", "Địa chỉ", "Toán HK 1" , "Toán HK 2","Tiếng Anh HK1","Tiếng Anh HK2", "Văn Học HK1" , "Văn Học HK2", "Thời Gian Thêm", "Điểm Trung Bình");
+            for (HocSinh hocsinh:foundStudents) {
+                System.out.printf("%-10s %-15s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s %-18s\n", hocsinh.getStudentId(), hocsinh.getName(), hocsinh.getYearOfBirth(), hocsinh.getaddress(), hocsinh.getMathOne(), hocsinh.getMathTwo(), hocsinh.getEngLishOne(), hocsinh.getEngLishTwo(), hocsinh.getLiteratureOne(), hocsinh.getLiteratureTwo(), hocsinh.getDataTime(), hocsinh.getMediumScore());
+            }
+        }
+        else {
+            System.out.println("Không tìm thấy học sinh có tên: " + name);
+        }
+
+
+    }
+
 //    public static void docsv() throws IOException {
 //        File sinhvien = new File("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
 //        try {
