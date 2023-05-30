@@ -126,7 +126,6 @@ public class DanhSachHS {
     public void deleteHS(int sv) {
         for (HocSinh sinhvien : hocSinhs) {
             if (sinhvien.getStudentId() == sv) {
-
                 hocSinhs.remove(sinhvien);
                 saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Hocsinh.csv");
                 break;

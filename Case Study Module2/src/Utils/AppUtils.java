@@ -52,7 +52,7 @@ public class AppUtils {
     public static int retryChoose2() {
         int option;
         int min =0;
-        int max =8;
+        int max =9;
         do {
             try {
             System.out.print(" ⭆ ");
@@ -67,6 +67,29 @@ public class AppUtils {
             }
         } while (true);
         return option;
+    }
+    public static int Xoa(){
+        int currentYear = LocalDate.now().getYear();
+        int id;
+        do {
+            try {
+
+                id = Integer.parseInt(scanner.nextLine());
+                if (id < 0){
+                    System.out.println("Mã sinh viên phải lớn hơn 0");
+                    System.out.print("Nhập Lại ⭆ ");
+                    continue;
+                }
+                break;
+            }
+            catch (Exception ex){
+                System.out.println("Bạn nhập sai mã sinh viên vui lòng nhập bằng chữ số");
+                System.out.print("Nhập Lại ⭆ ");
+            }
+
+        }
+        while (true);
+        return id;
     }
     public static int dayOfBird(){
         int currentYear = LocalDate.now().getYear();

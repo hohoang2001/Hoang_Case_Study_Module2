@@ -57,7 +57,8 @@ public class ProducView {
                     "|" + "5.	Xoá học sinh.                               |\n" +
                     "|" + "6.	Số lượng học sinh có trong danh sách.       |\n" +
                     "|" + "7.	Xem Tài Khoản ADMIN.                        |\n" +
-                    "|" + "8. Xếp danh sách điểm từ cao đến thấp          |\n" +
+                    "|" + "8. Xếp danh sách điểm từ cao đến thấp.          |\n" +
+                    "|" + "9. Đăng ký tài khoản học sinh.                  |\n" +
                     "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
                     "|" + "_____________________________________________  |");
             choise = AppUtils.retryChoose2();
@@ -116,7 +117,7 @@ public class ProducView {
                 case 5:
                     dssv.inSv();
                     System.out.println("Nhập mã học sinh muốn xoá: ");
-                    dssv.deleteHS(input.nextInt());
+                    dssv.deleteHS(AppUtils.Xoa());
                     break;
                 case 6:
                     System.out.println(dssv.laySoLuongHS() + " Học sinh có trong danh sách.");
@@ -126,6 +127,9 @@ public class ProducView {
                     break;
                 case 8:
                     dssv.xepHs();
+                    break;
+                case 9:
+                    registerAccountSV();
                     break;
                 case 0:
                     System.out.println("Quay lại chương trình đăng nhập");
@@ -168,15 +172,11 @@ public class ProducView {
                     break;
                 case 2:
                     System.out.println("1 Đăng ký Tài Khoản Admin");
-                    System.out.println("2 Đăng ký tài khoản sinh viên");
                     System.out.println("0 Quay Lại chương trình");
                     int chossse = AppUtils.retryChoose();
                     switch (chossse){
                         case 1:
                             registerAccount();
-                            break;
-                        case 2:
-                            registerAccountSV();
                             break;
                         case 0:
                             exit = false;
@@ -331,7 +331,7 @@ public class ProducView {
             }
             while (true);
             System.out.println("Đăng Ký Tài Khoản Thành Công");
-            LoginSV();
+            menu();
         } catch (IOException e) {
             System.out.println("Lỗi Không Thể Tạo Tài Khoản");
         }
