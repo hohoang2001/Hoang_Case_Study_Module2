@@ -1,4 +1,4 @@
-package models;
+package Models;
 
 public class UserSV implements IModel<UserSV> {
     private String useName;
@@ -11,6 +11,7 @@ public class UserSV implements IModel<UserSV> {
 
     public UserSV() {
     }
+
     public String getUseName() {
         return useName;
     }

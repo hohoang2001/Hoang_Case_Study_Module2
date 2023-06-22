@@ -1,9 +1,10 @@
 package Utils;
 
-import models.IModel;
+import Models.IModel;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -39,22 +40,18 @@ public class FileUtils {
     }
 
 
+    public static <T> void saveData(String filePath, List<T> data) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            for (T item : data) {
+                writer.write(item.toString());
+                writer.write(System.lineSeparator());
+            }
+            System.out.println("Lưu dữ liệu thành công!");
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lưu dữ liệu: " + e.getMessage());
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
 }
