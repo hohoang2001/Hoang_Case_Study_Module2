@@ -13,15 +13,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class PoinService {
-    private List<Student> students = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Student.csv",Student.class);
-    private List<Clazz> clazzes = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Clazz.csv",Clazz.class);
-    private List<Module> modules = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Module.csv",Module.class);
+    private List<Student> students = (List<Student>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Student.txt");
+    private List<Clazz> clazzes = (List<Clazz>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Clazz.txt");
+    private List<Module> modules = (List<Module>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Module.txt");
 
 
-    private List<Poin> poinList ;
-    String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Poin.csv";
-    public PoinService(){
-        this.poinList = FileUtils.readFile(PATH,Poin.class);
+    public static List<Poin> poinList ;
+    String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Poin.txt";
+    public PoinService() throws IOException, ClassNotFoundException {
+        poinList = (List<Poin>) FileUtils.deserialize(PATH);
+//        poinList = FileUtils.readFile(PATH,Poin.class);
     }
     public LocalDate dataTime() {
         LocalDate localDate = LocalDate.now();
@@ -84,7 +85,10 @@ public class PoinService {
                 }
             }
         }
-        while (a);
+        while (true);
+    }
+    public void arrange(){
+
     }
 
 }

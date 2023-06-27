@@ -1,7 +1,9 @@
 package Models;
 
-public class User implements IModel<User> {
+import java.io.Serializable;
 
+public class User implements IModel<User>, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
     private String useName;
     private String passWord;
     private String partition;

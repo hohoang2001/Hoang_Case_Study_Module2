@@ -2,10 +2,7 @@ package Utils;
 
 import Models.IModel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +49,26 @@ public class FileUtils {
         }
 
     }
+    //doc file => object
+    // deserialize to Object from given file
+    public static Object deserialize(String fileName) throws IOException,
+            ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(fileName);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        Object obj = ois.readObject();
+        ois.close();
+        return obj;
+    }
 
+    //ghi object vo file
+    // serialize the given object and save it to file
+    public static void serialize(Object obj, String fileName)
+            throws IOException {
+        FileOutputStream fos = new FileOutputStream(fileName);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(obj);
+
+        fos.close();
+    }
 
 }

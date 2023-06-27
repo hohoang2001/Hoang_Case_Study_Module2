@@ -11,18 +11,35 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class TeacherList {
-    private List<Student> students = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Student.csv", Student.class);
-    private List<Teacher> teachers;
-    public static int teacherId = 0;
 
-    public TeacherList() {
-        this.teachers = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.csv", Teacher.class);
+
+public class TeacherList {
+    static Scanner input = new Scanner(System.in);
+    static String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Student.txt";
+    public static List<Student> students;
+
+    static {
+        try {
+            students = (List<Student>) FileUtils.deserialize(PATH);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Teacher> teachers;
+    public static int teacherId = 0;
+    String Path = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.txt";
+
+    public TeacherList() throws IOException, ClassNotFoundException {
+        teachers = (List<Teacher>) FileUtils.deserialize(Path);
+//        teachers = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.csv",Teacher.class);
         teacherId = teachers.get(teachers.size() - 1).getTeacherId() + 1;
     }
 
-    public void addTeacher(Teacher teacher) {
-        this.teachers.add(teacher);
+    public static void addTeacher(Teacher teacher) {
+        teachers.add(teacher);
     }
 
     public void saveToFile(String filename) {
@@ -53,7 +70,7 @@ public class TeacherList {
                 }
         }
     }
-    public void fixTeacher() {
+    public void fixTeacher() throws IOException {
         Scanner input = new Scanner(System.in);
         boolean a = true;
         int TeacherId;
@@ -79,7 +96,7 @@ public class TeacherList {
                 teacher.setAddress(input.nextLine());
 
                 dataTime();
-                saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.csv");
+                FileUtils.serialize(teachers, Path);
                 a = true;
                 break;
             }
@@ -89,11 +106,50 @@ public class TeacherList {
             System.out.println(" Mã Giáo Viên không có trong danh sách.");
         }
     }
-    public LocalDate dataTime() {
+    public static LocalDate dataTime() {
         LocalDate localDate = LocalDate.now();
         System.out.println("Ngày Thêm: " + localDate);
         return localDate;
     }
+    public static boolean checkTeacher(int id){
+        for (Teacher teacher:teachers) {
+            if (id == teacher.getTeacherId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void showTeacher(){
+        System.out.printf("%-10s %-25s %-28s %-18s %-18s %-18s %-25s %-25s \n", "ID", "Tên", "Email", "Số điện thoại", "Năm sinh", "Địa chỉ", " Chức Vụ", "Thời Gian Thêm");
+        for (Teacher teacher:teachers) {
+            System.out.printf("%-10s %-25s %-28s %-18s %-18s %-18s %-25s %-25s \n", teacher.getTeacherId(), teacher.getName(),teacher.getEmail(),teacher.getPhone(),teacher.getYearOfBirth(),teacher.getAddress(),teacher.getPosition(),teacher.getDataTime());
+        }
+    }
 
-
+    public static void addTeacher() throws IOException {
+        System.out.println("Nhập Họ Và Tên");
+        String name = AppUtils.retryString();
+        System.out.println("Nhập chức vụ");
+        String position = AppUtils.retryPosition();
+        System.out.println("⭆ Nhập Số điện thoại: ");
+        String phone = AppUtils.phone();
+        System.out.println("Nhập Email");
+        String email = AppUtils.email();
+        System.out.println("⭆ Nhập Năm Sinh: ");
+        int yearOfBirth = AppUtils.dayOfBird();
+        System.out.println("⭆ Nhập địa chỉ: ");
+        String address = input.nextLine();
+        LocalDate date = dataTime();
+        Teacher teacher = new Teacher(
+                name,
+                yearOfBirth,
+                phone,
+                email,
+                address,
+                position,
+                date);
+        teacher.setTeacherId(teacherId++);
+        addTeacher(teacher);
+        FileUtils.serialize(teachers,"/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.txt");
+    }
 }

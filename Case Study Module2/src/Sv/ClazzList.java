@@ -1,5 +1,6 @@
 package Sv;
 
+import Models.User;
 import Utils.AppUtils;
 import Utils.FileUtils;
 import Models.Clazz;
@@ -13,13 +14,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ClazzList {
-    private List<Teacher> teachers;
-    private static List<Clazz> clazzList;
+    private List<Teacher> teachers = (List<Teacher>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.txt");
+    public static List<Clazz> clazzList;
     private List<Student> students;
     public static int clazzId = 0;
-    String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.csv";
-    public ClazzList() {
-        this.clazzList = FileUtils.readFile(PATH, Clazz.class);
+    String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.txt";
+    public ClazzList() throws IOException, ClassNotFoundException {
+        clazzList = (List<Clazz>) FileUtils.deserialize(PATH);
+//        clazzList = FileUtils.readFile(PATH, Clazz.class);
         clazzId = clazzList.get(clazzList.size() - 1).getClazzId() + 1;
     }
     Scanner input = new Scanner(System.in);
@@ -46,7 +48,12 @@ public class ClazzList {
 
     public void displayClazz() {
         for (Clazz clazz : clazzList) {
-            System.out.println(clazz.getName());
+            for (Teacher teacher: teachers){
+                if (clazz.getTeacherId() == teacher.getTeacherId()){
+                    System.out.println(clazz.getName());
+                    System.out.println(teacher.getName());
+                }
+            }
         }
     }
 
@@ -72,28 +79,70 @@ public class ClazzList {
     public void display(){
         System.out.printf("%-18s %-18s \n", "Lớp", "Giáo Viên Quản lý" );
         for (Clazz clazz:clazzList) {
-            System.out.printf("%-18s %-18s \n", clazz.getName());
+            System.out.printf("%-18s %-18s \n", clazz.getName(), clazz.getTeacherId());
         }
     }
-    public void fixClazz(int id){
+    public boolean checkClazzz(int clazzId){
         for (Clazz clazz:clazzList) {
-           if (id == clazz.getClazzId()){
-               System.out.println("Nhập Id Giáo Viên Quản lý");
-               int idTeacher = input.nextInt();
-               clazz.setTeacherId(idTeacher);
-           }
+            if (clazz.getClazzId() == clazzId){
+                return true;
+            }
         }
+        return false;
     }
+
+    public void fixClazz() throws IOException {
+        Scanner input = new Scanner(System.in);
+        boolean a = true;
+        int clazzId = 0;
+        int teacherId;
+        do {
+            try {
+                System.out.println("Nhập Mã Lớp: ");
+                clazzId = Integer.parseInt(input.nextLine());
+            } catch (Exception e) {
+                System.out.println("Mã lớp không hợp lệ vui lòng nhập bằng số");
+            }
+
+            if (checkClazz(clazzId)){
+                for (Clazz clazz : clazzList) {
+                    if (clazz.getClazzId() == clazzId) {
+                        System.out.println("Nhập Id Giáo Viên Quản lý Muốn Thay Đổi");
+                        teacherId = AppUtils.seachTeacherId();
+                        for (Teacher teacher :teachers) {
+                            if(teacher.getTeacherId() == teacherId){
+                                clazz.setTeacherId(teacherId);
+                                dataTime();
+                                FileUtils.serialize(clazzList,"/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.txt");
+                                return;
+                            }
+                            else  {
+                                System.out.println(" Mã Giáo Viên không có trong danh sách.");
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            else {
+                System.out.println("Bạn Nhập Sai ID Lớp");
+            }
+        }
+        while (true);
+
+        }
+
     public LocalDate dataTime() {
         LocalDate localDate = LocalDate.now();
         System.out.println("Ngày Thêm: " + localDate);
         return localDate;
     }
     public void themSv(Clazz clazz) {
-        this.clazzList.add(clazz);
+        clazzList.add(clazz);
     }
 
-    public void addClazz(){
+    public void addClazz() throws IOException {
         System.out.println("Nhập Tên Lớp");
         String name = AppUtils.retryNameClazz();
         System.out.println("Nhập Id Giáo Viên Quản lý ");
@@ -102,18 +151,12 @@ public class ClazzList {
         Clazz clazz = new Clazz(idTeacher, name,date);
         clazz.setClazzId(clazzId++);
         themSv(clazz);
-        saveFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.csv");
+        FileUtils.serialize(clazzList,"/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.txt");
 
     }
-    public void saveFile(String filename) {
-        try (FileWriter writer = new FileWriter(filename, false)) {
-            for (Clazz clazz : clazzList) {
-                String line = clazz.toString();
-                writer.write(line);
-                writer.write("\n");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static void showClazz(){
+        for (Clazz clazz:clazzList) {
+            System.out.println(clazz.getName());
         }
     }
     public static boolean checkClazz(int clazzId){

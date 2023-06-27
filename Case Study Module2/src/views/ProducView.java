@@ -14,38 +14,135 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ProducView {
+    static String pathUser = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Account.txt";
+    public static List<User> users;
+    public static List<Teacher> teachers;
 
-    private static final Account account = new Account();
+
+    static {
+        try {
+            teachers = (List<Teacher>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Teacher.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            users = (List<User>) FileUtils.deserialize(pathUser);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final Account account;
+
+    static {
+        try {
+            account = new Account();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static String Path = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Poin.txt";
+    public static List<Poin> poinList;
+
+    static {
+        try {
+            poinList = (List<Poin>) FileUtils.deserialize(Path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final AccountSV accountsv = new AccountSV();
     static Scanner input = new Scanner(System.in);
-     static List<Student> students = FileUtils.readFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Student.csv", Student.class);
+    static String PATH = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Student.txt";
+    static List<Student> students;
 
-    private static StudentList student = new StudentList();
-    static TeacherList teacherList = new TeacherList();
-    static ClazzList clazzList = new ClazzList();
-    static PoinService poinService = new PoinService();
+    static {
+        try {
+            students = (List<Student>) FileUtils.deserialize(PATH);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static StudentList student;
+
+    static {
+        try {
+            student = new StudentList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static TeacherList teacherList;
+
+    static {
+        try {
+            teacherList = new TeacherList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static ClazzList clazzList;
+
+    static {
+        try {
+            clazzList = new ClazzList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static PoinService poinService;
+
+    static {
+        try {
+            poinService = new PoinService();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     static boolean exit = false;
 
-    public static void menuHs() throws IOException {
+    public static void menuHs() throws IOException, ClassNotFoundException {
         int choise;
         do {
-            System.out.println("      --------------MENU---------------");
-            System.out.println("______________________________________________\n" +
-                    "|" + "1.	Xem danh sách học sinh.                     |\n" +
-                    "|" + "2.	Xem Điểm .                     |\n" +
-                    "|" + "3.	Tìm học sinh theo tên.                      |\n" +
-                    "|" + "4.	Số lượng học sinh có trong danh sách.       |\n" +
-                    "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
-                    "|" + "_____________________________________________  |");
+            menuStudent();
             choise = AppUtils.retryChoose2();
             switch (choise) {
                 case 1:
-                    student.inSv();
+                    student.displayStudent();
                     break;
                 case 2:
-
+                    System.out.println("Nhập Id Student");
+                    int idStudent = AppUtils.delete();
+                    System.out.println("Nhập Id Clazz");
+                    int idClazz = AppUtils.seachClazzId();
+                    System.out.println("Nhập Id Module");
+                    int idModule = AppUtils.retryChooseModule();
+                    poinService.displayStudent(idStudent, idClazz, idModule);
+                    break;
                 case 3:
-                    student.timKiemHs();
+                    student.searchStudent();
                     break;
                 case 4:
                     System.out.println(student.laySoLuongHS() + " Học sinh có trong danh sách.");
@@ -59,20 +156,20 @@ public class ProducView {
         while (choise != 0);
     }
 
-    public static void menuPrincipal() throws IOException {
-        int choise;
+    public static void menuPrincipal() throws IOException, ClassNotFoundException {
+        int chose;
         do {
             showMenuPrincipal();
-            choise = AppUtils.retryChoosePrincipal();
-            switch (choise) {
+            chose = AppUtils.retryChoosePrincipal();
+            switch (chose) {
                 case 1:
-                    addTeacher();
+                    TeacherList.addTeacher();
                     break;
                 case 2:
-                    student.timKiemHs();
+                    student.searchStudent();
                     break;
                 case 3:
-                    student.inSv();
+                    student.displayStudent();
                     break;
                 case 4:
                     teacherList.displayDelete();
@@ -89,7 +186,7 @@ public class ProducView {
                     account.inUser();
                     break;
                 case 8:
-                    registerAccount();
+                    account.registerAccount();
                     break;
                 case 9:
                     System.out.println("Nhập Id Giáo Viên Muốn Xoá");
@@ -103,45 +200,54 @@ public class ProducView {
                     clazzList.displayClazz();
                     break;
                 case 12:
-                    System.out.println("Nhập id của lớp muốn sửa");
-                    int idClazz = input.nextInt();
-                    clazzList.fixClazz(idClazz);
+                    clazzList.fixClazz();
+                    break;
                 case 13:
                     clazzList.addClazz();
                     break;
                 case 14:
-                    poinService.displayStudent(1,1,1);
+                    System.out.println("Nhập Id Student");
+                    int idStudent = AppUtils.delete();
+                    System.out.println("Nhập Id Clazz");
+                    int idClazz = AppUtils.seachClazzId();
+                    System.out.println("Nhập Id Module");
+                    int idModule = AppUtils.retryChooseModule();
+                    poinService.displayStudent(idStudent, idClazz, idModule);
+                    break;
+                case 15:
+                    TeacherList.showTeacher();
             }
         }
-        while (choise != 0);
+        while (chose != 0);
     }
 
-    public static void menu() throws IOException {
-        int choise;
+    public static void menu() throws IOException, ClassNotFoundException {
+        int chose;
         do {
             showMenuTeacher();
-            choise = AppUtils.retryChoose2();
-            switch (choise) {
+            chose = AppUtils.retryChoose2();
+            switch (chose) {
                 case 1:
-                    addStudent();
+                    StudentList.addStudent();
                     break;
                 case 2:
-                    student.timKiemHs();
+                    student.searchStudent();
                     break;
                 case 3:
-                    student.inSv();
+                    student.displayStudent();
                     break;
                 case 4:
-                    student.suaHS();
+                    student.fixStudent();
                     break;
                 case 5:
-                    student.inSv();
+                    student.displayStudent();
                     System.out.println("Nhập mã học sinh muốn xoá: ");
                     student.deleteStudent(AppUtils.delete());
                     System.out.println("Đã Gửi Danh Sách Học Sinh Chờ Xoá Lên Giám Đốc / Chờ xác nhận");
                     break;
                 case 6:
-
+                    ClazzList.showClazz();
+                    break;
                 case 7:
                     System.out.println(student.laySoLuongHS() + " Học sinh có trong danh sách.");
                     break;
@@ -152,17 +258,17 @@ public class ProducView {
 
                     break;
                 case 10:
-                    registerAccount();
+                    account.registerAccount();
                     break;
                 case 11:
-                    addPoin();
+                    addPoint();
                 case 0:
                     System.out.println("Quay lại chương trình đăng nhập");
                     account();
                     break;
             }
         }
-        while (choise != 0);
+        while (chose != 0);
     }
 
     public static void account() {
@@ -186,28 +292,25 @@ public class ProducView {
 
     public static void Login() {
         Scanner scanner = new Scanner(System.in);
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Account.csv"))) {
-            String line;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Account.txt"))) {
             boolean found = false;
             System.out.println("Nhập tên đăng nhập: ");
             String username = scanner.nextLine();
             System.out.println("Nhập mật khẩu: ");
             String password = scanner.nextLine();
 
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].equals("Student") && parts[1].equals(username) && parts[2].equals(password)) {
+            for (User user : users) {
+                if (user.getPartition().equals("Student") && user.getUseName().equals(username) && user.getPassWord().equals(password)) {
                     found = true;
                     menuHs();
                     break;
                 }
-                if (parts.length == 3 && parts[0].equals("Teacher") && parts[1].equals(username) && parts[2].equals(password)) {
+                if (user.getPartition().equals("Teacher") && user.getUseName().equals(username) && user.getPassWord().equals(password)) {
                     found = true;
                     menu();
                     break;
                 }
-                if (parts.length == 3 && parts[0].equals("Principal") && parts[1].equals(username) && parts[2].equals(password)) {
+                if (user.getPartition().equals("Principal") && user.getUseName().equals(username) && user.getPassWord().equals(password)) {
                     found = true;
                     menuPrincipal();
                     break;
@@ -219,7 +322,7 @@ public class ProducView {
                 exit = true;
                 account();
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Lỗi: Không thể đọc file.");
             exit = true;
             account();
@@ -227,195 +330,100 @@ public class ProducView {
 
     }
 
-    public static void registerAccount() {
-        Scanner scanner = new Scanner(System.in);
-        String path = "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Account.csv";
-        try {
-            List<User> userSVS = FileUtils.readFile(path, User.class);
-            User user = new User();
-            do {
-                user.setPartition(AppUtils.partition());
-                System.out.println("Nhập Tài Khoản");
-                String useNew = scanner.nextLine();
-                if (accountsv.CheckNameAccount(useNew)) {
-                    System.out.println("Tài khoản đã tồn tại");
-                    continue;
-                }
-                user.setUseName(useNew);
-                break;
-            }
-            while (true);
-            System.out.println("Nhập Mật Khẩu");
-            do {
-                String passNew = scanner.nextLine();
-                int lenght = 10;
-                if (passNew.length() > lenght) {
-                    System.out.println("Vui Lòng Nhập Độ Dài Mật Khẩu 10 Ký Tự");
-                    System.out.println("Nhập Lại");
-                    continue;
-                }
-
-                user.setPassWord(passNew);
-                break;
-            }
-            while (true);
-            userSVS.add(user);
-
-
-            FileUtils.saveData(path, userSVS);
-            System.out.println("Đăng Ký Tài Khoản Thành Công");
-            menu();
-        } catch (IOException e) {
-            System.out.println("Lỗi Không Thể Tạo Tài Khoản");
-        }
-    }
-
-    public static void addTeacher() {
-        System.out.println("Nhập Họ Và Tên");
-        String name = AppUtils.retryString();
-        System.out.println("Nhập chức vụ");
-        String position = AppUtils.retryPosition();
-        System.out.println("⭆ Nhập Số điện thoại: ");
-        String phone = AppUtils.phone();
-        System.out.println("Nhập Email");
-        String email = AppUtils.email();
-        System.out.println("⭆ Nhập Năm Sinh: ");
-        int yearOfBirth = AppUtils.dayOfBird();
-        System.out.println("⭆ Nhập địa chỉ: ");
-        String address = input.nextLine();
-        LocalDate date = student.dataTime();
-        Teacher teacher = new Teacher(
-                name,
-                yearOfBirth,
-                phone,
-                email,
-                address,
-                position,
-                date);
-        teacher.setTeacherId(TeacherList.teacherId++);
-        teacherList.addTeacher(teacher);
-        teacherList.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Teacher.csv");
-    }
 
 
     public static void showMenuPrincipal() {
-        System.out.println("      --------------MENU---------------");
-        System.out.println("______________________________________________\n" +
-                "|" + "1.	Thêm  Giáo viên.                |\n" +
-                "|" + "2.	Tìm học sinh.                               |\n" +
-                "|" + "3.	Xuất Danh Sách học sinh                                 |\n" +
-                "|" + "4.	Xem danh sách học sinh chờ xoá.             |\n" +
-                "|" + "5.	Xoá Học Sinh.                               |\n" +
-                "|" + "6.	Số lượng học sinh.       |\n" +
-                "|" + "7.	Xem Tài Khoản Giáo Viên.                    |\n" +
-                "|" + "8. Đăng ký tài khoản Giáo viên.                  |\n" +
-                "|" + "9. Xoá Giáo Viên                  |\n" +
-                "|" + "10. Sửa Thông Tin Giáo Viên.                  |\n" +
-                "|" + "11. Xem Danh Sách Lớp Và Giáo Viên Đang Quản Lý Lớp Đó.                  |\n" +
-                "|" + "12. Thay Đổi Giáo Viên Quản Lý Của lớp.                  |\n" +
-                "|" + "13. Thêm Lớp.                  |\n" +
-                "|" + "14. Xem Điểm Từng Học Sinh.                  |\n" +
-                "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
-                "|" + "_____________________________________________  |");
+        System.out.println("                               ╔════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        System.out.println("                               ║                                    Giao diện Giám Đốc                                          ║");
+        System.out.println("                               ║                                 1.	 Thêm giáo viên.                                            ║");
+        System.out.println("                               ║                                 2.	 Tìm học sinh.                                              ║");
+        System.out.println("                               ║                                 3.	 In danh sách học sinh.                                     ║");
+        System.out.println("                               ║                                 4.	 Xem danh sách học sinh chờ xoá.                            ║");
+        System.out.println("                               ║                                 5.	 Xoá học sinh.                                              ║");
+        System.out.println("                               ║                                 6.	 Số lượng học sinh toàn trường.                             ║");
+        System.out.println("                               ║                                 7.	 Xem tài khoản giáo viên.                                   ║");
+        System.out.println("                               ║                                 8.	 Đăng ký tài khoản giáo viên.                               ║");
+        System.out.println("                               ║                                 9.  Xoá giáo viên.                                             ║");
+        System.out.println("                               ║                                 10. Sửa thông tin giáo viên.                                   ║");
+        System.out.println("                               ║                                 11. Xem danh sách lớp và giáo viên đang quản lý lớp.           ║");
+        System.out.println("                               ║                                 12. Thay đổi giáo viên quản lý của lớp.                        ║");
+        System.out.println("                               ║                                 13. Thêm lớp.                                                  ║");
+        System.out.println("                               ║                                 14. Xem điểm từng học sinh.                                    ║");
+        System.out.println("                               ║                                 15. Hiển thị danh sách Giáo viên.                              ║");
+        System.out.println("                               ║                                 0.  Quay lại chương trình đăng nhập.                           ║");
+        System.out.println("                               ╚════════════════════════════════════════════════════════════════════════════════════════════════╝");
     }
 
     public static void showMenuTeacher() {
-        System.out.println("      --------------MENU---------------");
-        System.out.println("______________________________________________\n" +
-                "|" + "1.	Thêm học sinh.                |\n" +
-                "|" + "2.	Tìm học sinh.                               |\n" +
-                "|" + "3.	In học sinh                                 |\n" +
-                "|" + "4.	Sửa thông tin học sinh.                     |\n" +
-                "|" + "5.	Xoá học sinh.                               |\n" +
-                "|" + "6.	Xem danh sách các lớp.                      |\n" +
-                "|" + "7.	Xem Tài Khoản ADMIN.                        |\n" +
-                "|" + "8. Xếp danh sách điểm từ cao đến thấp theo lớp.  |\n" +
-                "|" + "9. Xếp danh sách điểm từ cao đến thấp cho toàn bộ học sinh.  |\n" +
-                "|" + "10. Đăng ký tài khoản học sinh.                  |\n" +
-                "|" + "0. Quay lại chương trình đăng nhập.            | \n" +
-                "|" + "_____________________________________________  |");
+        System.out.println("                               ╔════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        System.out.println("                               ║                                    Giao diện Teacher                                           ║");
+        System.out.println("                               ║                                 1.	Thêm học sinh.                                              ║");
+        System.out.println("                               ║                                 2.	Tìm học sinh.                                               ║");
+        System.out.println("                               ║                                 3.	In danh sách học sinh                                       ║");
+        System.out.println("                               ║                                 4.	Sửa thông tin học sinh.                                     ║");
+        System.out.println("                               ║                                 5. Xoá học sinh.                                               ║");
+        System.out.println("                               ║                                 6.	Xem danh sách các lớp.                                      ║");
+        System.out.println("                               ║                                 7.	Xem Tài Khoản ADMIN.                                        ║");
+        System.out.println("                               ║                                 8. Xếp danh sách điểm từ cao đến thấp theo lớp.                ║");
+        System.out.println("                               ║                                 9. Xếp danh sách điểm từ cao đến thấp cho toàn bộ học sinh.    ║");
+        System.out.println("                               ║                                 10. Đăng ký tài khoản học sinh.                                ║");
+        System.out.println("                               ║                                 0. Quay lại chương trình đăng nhập.                            ║");
+        System.out.println("                               ╚════════════════════════════════════════════════════════════════════════════════════════════════╝");
     }
-
-    public static void addStudent() {
-        System.out.println(" ⭆ Nhập Tên ");
-        String name = AppUtils.retryString();
-        System.out.println("⭆ Nhập Lớp: ");
-        int clazz = input.nextInt();
-        String classss = AppUtils.retryClass(AppUtils.retryClasss(clazz));
-        System.out.println("⭆ Nhập Số điện thoại: ");
-        String phone = AppUtils.phone();
-        System.out.println("⭆ Nhập Năm Sinh: ");
-        int yearOfBirth = AppUtils.dayOfBird();
-        System.out.println("⭆ Nhập địa chỉ: ");
-        String address = input.nextLine();
-        System.out.println("⭆ Nhập Trạng Thái: ");
-        String status = input.nextLine();
-        System.out.println("Nhập Module");
-        int module = input.nextInt();
-        LocalDate date = student.dataTime();
-
-        Student sv = new Student(name,
-                classss,
-                phone,
-                yearOfBirth,
-                address,
-                status,
-                clazz,
-                module,
-                date
-        );
-        sv.setStudentId(StudentList.studentId++);
-        student.themSv(sv);
-        student.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Student.csv");
-    }
-
-    public static void addPoin() {
-        boolean a = false;
-        int idStudent;
-        do {
-            try {
-                System.out.println("Nhập mã học sinh muốn thêm điểm");
-                idStudent = AppUtils.delete();
-                for (Student student1 : students) {
-                    if (student1.getStudentId() == idStudent) {
-                        System.out.println("Nhập Module muốn thêm");
-                        int Module = AppUtils.retryChooseModule();
-                        if (ModuleList.searchCheckModule(Module)) {
-                            System.out.println("Nhập Id Lớp Muốn Thêm");
-                            int clazz = AppUtils.seachClazzId();
-                            if (ClazzList.checkClazz(clazz)) {
-                                System.out.println("Nhập điểm thực hành");
-                                double enforcement = AppUtils.Point();
-                                System.out.println("Nhập điểm lý thuyết");
-                                double theory = AppUtils.Point();
-                                System.out.println("Nhập điểm case study");
-                                double casePoint = AppUtils.Point();
-                                System.out.println("Nhập điểm phỏng vấn");
-                                double interviewPoint = AppUtils.Point();
-                                String isPass = poinService.classification(enforcement, theory, casePoint, interviewPoint);
-                                LocalDate date = poinService.dataTime();
-                                Poin poin = new Poin(idStudent, clazz, Module, enforcement, theory, casePoint, interviewPoint, isPass, date);
-                                poinService.addPoint(poin);
-                                poinService.saveToFile("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Poin.csv");
-                                a = true;
-                                break;
-                            }
+public static void addPoint() throws IOException, ClassNotFoundException {
+    boolean success = false;
+    do {
+        try {
+            System.out.println("Nhập mã học sinh muốn thêm điểm");
+            int idStudent = AppUtils.delete();
+            for (Student student1 : students) {
+                if (student1.getStudentId() == idStudent) {
+                    System.out.println("Nhập Module muốn thêm");
+                    int module = AppUtils.retryChooseModule();
+                    if (ModuleList.searchCheckModule(module)) {
+                        System.out.println("Nhập Id Lớp Muốn Thêm");
+                        int clazz = AppUtils.seachClazzId();
+                        if (ClazzList.checkClazz(clazz)) {
+                            System.out.println("Nhập điểm thực hành");
+                            double enforcement = AppUtils.Point();
+                            System.out.println("Nhập điểm lý thuyết");
+                            double theory = AppUtils.Point();
+                            System.out.println("Nhập điểm case study");
+                            double casePoint = AppUtils.Point();
+                            System.out.println("Nhập điểm phỏng vấn");
+                            double interviewPoint = AppUtils.Point();
+                            String isPass = poinService.classification(enforcement, theory, casePoint, interviewPoint);
+                            LocalDate date = poinService.dataTime();
+                            Poin poin = new Poin(idStudent, clazz, module, enforcement, theory, casePoint, interviewPoint, isPass, date);
+                            poinService.addPoint(poin);
+                            FileUtils.serialize(poinList,"/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Poin.txt");
+                            success = true;
                             break;
+                        } else {
+                            System.out.println("Không tìm thấy lớp học");
                         }
-                        break;
+                    } else {
+                        System.out.println("Module không tồn tại");
                     }
-                    a = true;
                 }
-                menu();
-                if (!a) {
-                    System.out.println(" Mã học sinh không có trong danh sách.");
-                }
-            } catch (Exception e) {
-                System.out.println("Lỗi");
             }
+            if (!success) {
+                System.out.println("Mã học sinh không có trong danh sách.");
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi: " + e.getMessage());
         }
-
-        while (!true);
-
-    }
+    } while (!success);
+    menu();
+}
+public static void menuStudent(){
+    System.out.println("                               ╔═══════════════════════════════════════════════════════════════════════════════════╗");
+    System.out.println("                               ║                                    Giao diện Học Sinh                             ║");
+    System.out.println("                               ║                                 [1] Xem danh sách học sinh                        ║");
+    System.out.println("                               ║                                 [2] Xem điểm                                      ║");
+    System.out.println("                               ║                                 [3] Tìm học sinh theo tên                         ║");
+    System.out.println("                               ║                                 [4] Số lượng học sinh                             ║");
+    System.out.println("                               ║                                 [5] Đăng xuất                                     ║");
+    System.out.println("                               ╚═══════════════════════════════════════════════════════════════════════════════════╝");
+}
 }

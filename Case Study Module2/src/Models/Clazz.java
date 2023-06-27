@@ -1,8 +1,10 @@
 package Models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Clazz implements IModel<Clazz> {
+public class Clazz implements IModel<Clazz>, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
     private static int maxId = 0;
     private String name;
     private int clazzId;

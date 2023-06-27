@@ -1,8 +1,15 @@
 package Models;
 
-import java.time.LocalDate;
+import Sv.*;
+import Utils.FileUtils;
 
-public class Poin implements IModel {
+import java.io.IOException;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
+
+public class Poin implements IModel, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
     private int studentId;
     private int idClazz;
     private int idModule;
@@ -132,5 +139,13 @@ public class Poin implements IModel {
         this.interviewPoint = Double.parseDouble(item[6]);
         this.isPass = item[7];
         this.date = LocalDate.parse(item[8]);
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        new Account();
+        List<User> users = Account.users;
+        FileUtils.serialize(users, "/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/Data/Account.txt");
+        Object studentList = FileUtils.deserialize("demo.txt");
+
     }
 }

@@ -1,6 +1,9 @@
 package Models;
 
-public class Module implements IModel {
+import java.io.Serializable;
+
+public class Module implements IModel, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
     private int idModule;
     private String nameModule;
     public Module(){

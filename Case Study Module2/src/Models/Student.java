@@ -1,9 +1,11 @@
 package Models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Student implements Comparable<Student>, IModel {
+public class Student implements Comparable<Student>, IModel, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
     private static int maxid = 0;
     private int studentId;
     private String clazz;

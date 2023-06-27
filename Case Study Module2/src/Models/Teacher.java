@@ -1,8 +1,11 @@
 package Models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Teacher implements Comparable<Teacher>, IModel {
+public class Teacher implements Comparable<Teacher>, IModel, Serializable {
+    private static final long serialVersionUID = -1322322139926390329L;
+
     protected static int maxid = 0;
     protected int teacherId;
     protected String name;
@@ -81,6 +84,14 @@ public class Teacher implements Comparable<Teacher>, IModel {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public LocalDate getDataTime() {
+        return dataTime;
+    }
+
+    public void setDataTime(LocalDate dataTime) {
+        this.dataTime = dataTime;
     }
 
     @Override

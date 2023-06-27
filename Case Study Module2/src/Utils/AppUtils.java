@@ -1,7 +1,9 @@
 package Utils;
 
 import Models.Clazz;
+import Models.Module;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +11,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppUtils {
+    private static final List<Clazz> clazzList;
+
+    static {
+        try {
+            clazzList = (List<Clazz>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Clazz.txt");
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final List<Module> moduleList;
+
+    static {
+        try {
+            moduleList = (List<Module>) FileUtils.deserialize("/Users/mac/Hoang_Case_Study_Module2/Case Study Module2/src/data/Module.txt");
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     static Scanner scanner = new Scanner(System.in);
 
     public static String retryString() {
@@ -142,13 +163,18 @@ public class AppUtils {
             try {
                 System.out.print(" ⭆ ");
                 option = Integer.parseInt(scanner.nextLine());
+                for (Module module:moduleList) {
+                    if (module.getIdModule() == option){
+                        break;
+                    }
+                }
                 if (option > max || option < min) {
                     System.out.println("Bạn nhập sai Module vui lòng nhập lai");
                     continue;
                 }
                 break;
             } catch (Exception ex) {
-                System.out.println("Bạn nhập sai Module vui lòng nhập lại");
+                System.out.println("Bạn nhập sai vui lòng nhập id Module bằng số");
             }
         } while (true);
         return option;
@@ -156,7 +182,7 @@ public class AppUtils {
     public static int retryChoosePrincipal() {
         int option;
         int min = 0;
-        int max = 14;
+        int max = 15;
         do {
             try {
                 System.out.print(" ⭆ ");
@@ -224,9 +250,39 @@ public class AppUtils {
                     System.out.print("Nhập Lại ⭆ ");
                     continue;
                 }
+                if (id > 0){
+                    for (Clazz clazz:clazzList) {
+                        if (clazz.getClazzId() == id){
+                            return id;
+                        }
+                    }
+                    System.out.println("Mã Lớp Không Có ");
+                    System.out.print("Nhập Lại ⭆ ");
+                    continue;
+                }
                 break;
             } catch (Exception ex) {
                 System.out.println("Bạn nhập sai mã Lớp vui lòng nhập bằng chữ số");
+                System.out.print("Nhập Lại ⭆ ");
+            }
+
+        }
+        while (true);
+        return id;
+    }
+    public static int seachTeacherId() {
+        int id;
+        do {
+            try {
+                id = Integer.parseInt(scanner.nextLine());
+                if (id < 0) {
+                    System.out.println("Mã Giáo viên phải lớn hơn 0");
+                    System.out.print("Nhập Lại ⭆ ");
+                    continue;
+                }
+                break;
+            } catch (Exception ex) {
+                System.out.println("Bạn nhập sai mã Giáo Viên vui lòng nhập bằng chữ số");
                 System.out.print("Nhập Lại ⭆ ");
             }
 
@@ -286,7 +342,7 @@ public class AppUtils {
         return option;
     }
 
-    private static List<Clazz> clazzList;
+
 
     public static String retryClasss(int idClass) {
         for (Clazz clazz : clazzList) {
@@ -378,5 +434,6 @@ public class AppUtils {
         while (!name);
         return Partition ;
     }
+
 
 }
